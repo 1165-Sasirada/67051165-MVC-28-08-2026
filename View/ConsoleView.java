@@ -124,7 +124,7 @@ public class ConsoleView {
 			Role role = Role.valueOf(sc.nextLine().toUpperCase());
 
 			Members m = memberController.addMembers(name, role);
-			System.out.println("New member added.");
+			System.out.println("New member added: " + m.get_id());
 		} catch (Exception e) {
 			System.out.println("Failed to add new member: " + e.getMessage());
 		}
