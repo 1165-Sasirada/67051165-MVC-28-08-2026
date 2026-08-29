@@ -2,5 +2,6 @@ package Model;
 public enum RequestStatus {
 	PENDING,
 	APPROVED,
-	REJECTED
+	REJECTED,
+	CANCELLED
 }

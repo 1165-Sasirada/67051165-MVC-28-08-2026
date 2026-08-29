@@ -21,6 +21,15 @@ public class RequestController {
 		return req;
 	}
 
+	public void cancelRequest(String request_id, String member_id) {
+		Role_Change_Requests req = requests.get(request_id);
+		if (req == null) {
+			throw new IllegalArgumentException("Request not found.");
+		}
+
+		req.cancelRequest(member_id);
+	}
+
 	public Decisions castDecisions(String request_id, String member_id, DecisionResult d) {
 		Role_Change_Requests req = requests.get(request_id);
 

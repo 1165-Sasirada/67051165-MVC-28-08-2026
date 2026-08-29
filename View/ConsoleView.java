@@ -20,8 +20,10 @@ public class ConsoleView {
 			System.out.println("1. List Members");
 			System.out.println("2. List Requests");
 			System.out.println("3. Create Role Change Request");
-			System.out.println("4. Submit Decision");
-			System.out.println("5. Exit");
+			System.out.println("4. Cancel Role Change Request");
+			System.out.println("5. Submit Decision");
+			System.out.println("6. Add New Member");
+			System.out.println("7. Exit");
 
 			System.out.print("Your choice: ");
 			String choice = sc.nextLine();
@@ -36,9 +38,15 @@ public class ConsoleView {
 					handleCreateRequest();
 					break;
 				case "4":
-					handleDecision();
+					handleCancelRequest();
 					break;
 				case "5":
+					handleDecision();
+					break;
+				case "6":
+					handleAddMember();
+					break;
+				case "7":
 					System.out.println("Exiting...");
 					return;
 				default:
@@ -73,9 +81,22 @@ public class ConsoleView {
 			Role role = Role.valueOf(sc.nextLine().toUpperCase());
 			
 			Role_Change_Requests req = requestController.createRequest(requester_id, target_id, role);
-			System.out.println("Create Reuest: " + req.get_id());
+			System.out.println("Create Request: " + req.get_id());
 		} catch (Exception e) {
 			System.out.println("Failed to create request: " + e.getMessage());
+		}
+	}
+
+	public void handleCancelRequest() {
+		try {
+			System.out.print("Request ID: ");
+			String request_id = sc.nextLine();
+			System.out.print("Member ID: ");
+			String member_id = sc.nextLine();
+			
+			requestController.cancelRequest(request_id, member_id);
+		} catch (Exception e) {
+			System.out.println("Cancellation Failed: " + e.getMessage());
 		}
 	}
 
@@ -92,6 +113,20 @@ public class ConsoleView {
 			System.out.println("Decision recorded.");
 		} catch (Exception e) {
 			System.out.println("Voting failed: " + e.getMessage());
+		}
+	}
+
+	public void handleAddMember() {
+		try {
+			System.out.print("Name: ");
+			String name = sc.nextLine();
+			System.out.print("Role (CREATOR / PRODUCER / EDITOR / FINANCE): ");
+			Role role = Role.valueOf(sc.nextLine().toUpperCase());
+
+			Members m = memberController.addMembers(name, role);
+			System.out.println("New member added.");
+		} catch (Exception e) {
+			System.out.println("Failed to add new member: " + e.getMessage());
 		}
 	}
 }

@@ -8,7 +8,6 @@ public class Role_Change_Requests {
 	private String target_id;
 	private Role new_role;
 	private RequestStatus status;
-	private boolean active;
 
 	private int approval_count = 0;
 	private int rejection_count = 0;
@@ -21,7 +20,6 @@ public class Role_Change_Requests {
 		this.target_id = target;
 		this.new_role = new_role;
 		this.status = RequestStatus.PENDING;
-		this.active = true;
 	}
 
 	private static String nextId() {
@@ -30,8 +28,8 @@ public class Role_Change_Requests {
 	}
 
 	public void processDecision(DecisionResult d) {
-		if (!this.active) {
-			throw new IllegalStateException("This role change request is inactive.");
+		if (this.status == RequestStatus.CANCELLED) {
+			throw new IllegalStateException("This request has been cancelled.");
 		}
 
 		if ((this.status == RequestStatus.APPROVED) || (this.status == RequestStatus.REJECTED)) {
@@ -55,9 +53,12 @@ public class Role_Change_Requests {
 		if (!member_id.equals(this.requester_id)) {
 			throw new IllegalArgumentException("Only original requester can cancel a request.");
 		}
-		if ((this.approval_count >= 0) || (this.rejection_count >= 0)) {
+		if ((this.approval_count > 0) || (this.rejection_count > 0)) {
 			throw new IllegalStateException("Votes have been casted. This request cannot be cancelled.");
 		}
+
+		this.status = RequestStatus.CANCELLED;
+		System.out.println("Request cancelled successfully.");
 	}
 	
 	public String get_id() {
