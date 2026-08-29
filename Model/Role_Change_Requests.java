@@ -27,7 +27,7 @@ public class Role_Change_Requests {
 		return new_id;
 	}
 
-	public void processDecision(DecisionResult d) {
+	public void processDecision(DecisionResult d, Members target) {
 		if (this.status == RequestStatus.CANCELLED) {
 			throw new IllegalStateException("This request has been cancelled.");
 		}
@@ -46,6 +46,10 @@ public class Role_Change_Requests {
 			this.status = RequestStatus.APPROVED;
 		} else if (this.rejection_count >= 2) {
 			this.status = RequestStatus.REJECTED;
+		}
+
+		if (this.status == RequestStatus.APPROVED) {
+			target.updateRole(new_role);
 		}
 	}
 

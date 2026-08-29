@@ -38,8 +38,10 @@ public class RequestController {
 		}
 
 		Decisions decision = new Decisions(req, member_id, d);
+		Members target = members.get(req.get_target_id());
+		
 		decisions.add(decision);
-		req.processDecision(d);
+		req.processDecision(d, target);
 		
 		return decision;
 	}

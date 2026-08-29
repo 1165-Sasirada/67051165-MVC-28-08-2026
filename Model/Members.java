@@ -21,6 +21,10 @@ public class Members {
 		return new_id;
 	}
 
+	public void updateRole(Role role) {
+		this.role = role;
+	}
+
 	public String get_id() {
 		return this.id;
 	}

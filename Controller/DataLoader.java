@@ -36,7 +36,9 @@ public class DataLoader {
 				Decisions decision = new Decisions(req, d.group(2), result);
 				decisions.add(decision);
 
-				req.processDecision(result);
+				Members target = members.get(req.get_target_id());
+
+				req.processDecision(result, target);
 			}
 		}
 	}
