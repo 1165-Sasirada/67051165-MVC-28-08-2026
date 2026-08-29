@@ -15,6 +15,12 @@ public class RequestController {
 	}
 
 	public Role_Change_Requests createRequest(String requester_id, String target_id, Role new_role) {
+		for (Role_Change_Requests req : requests.values()) {
+			if (req.get_target_id().equals(target_id) && req.get_status() == RequestStatus.PENDING) {
+				throw new IllegalStateException("This traget member already has another request pending.");
+			}
+		}
+
 		Role_Change_Requests req = new Role_Change_Requests(requester_id, target_id, new_role);
 		requests.put(req.get_id(), req);
 		
@@ -34,7 +40,13 @@ public class RequestController {
 		Role_Change_Requests req = requests.get(request_id);
 
 		if (req == null) {
-			throw new IllegalArgumentException("Requets not found.");
+			throw new IllegalArgumentException("Requet not found.");
+		}
+
+		for (Decisions dec : decisions) {
+			if (dec.get_request_id().equals(request_id) && dec.get_member_id().equals(member_id)) {
+				throw new IllegalStateException("ALready voted on this request.");
+			}
 		}
 
 		Decisions decision = new Decisions(req, member_id, d);
