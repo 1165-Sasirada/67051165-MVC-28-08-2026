@@ -32,8 +32,11 @@ public class DataLoader {
 		while (d.find()) {
 			Role_Change_Requests req = requests.get(d.group(1));
 			if (req != null) {
-				Decisions decision = new Decisions(req, d.group(2), DecisionResult.valueOf(d.group(3)));
+				DecisionResult result = DecisionResult.valueOf(d.group(3));
+				Decisions decision = new Decisions(req, d.group(2), result);
 				decisions.add(decision);
+
+				req.processDecision(result);
 			}
 		}
 	}

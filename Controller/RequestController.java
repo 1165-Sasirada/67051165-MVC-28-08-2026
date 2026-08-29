@@ -30,6 +30,8 @@ public class RequestController {
 
 		Decisions decision = new Decisions(req, member_id, d);
 		decisions.add(decision);
+		req.processDecision(d);
+		
 		return decision;
 	}
 

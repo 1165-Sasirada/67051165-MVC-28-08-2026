@@ -19,8 +19,9 @@ public class ConsoleView {
 			System.out.println("===== MENU =====");
 			System.out.println("1. List Members");
 			System.out.println("2. List Requests");
-			System.out.println("3. Submit Decision");
-			System.out.println("4. Exit");
+			System.out.println("3. Create Role Change Request");
+			System.out.println("4. Submit Decision");
+			System.out.println("5. Exit");
 
 			System.out.print("Your choice: ");
 			String choice = sc.nextLine();
@@ -32,9 +33,12 @@ public class ConsoleView {
 					listRequests();
 					break;
 				case "3":
-					handleDecision();
+					handleCreateRequest();
 					break;
 				case "4":
+					handleDecision();
+					break;
+				case "5":
 					System.out.println("Exiting...");
 					return;
 				default:
@@ -56,6 +60,22 @@ public class ConsoleView {
 		for (Role_Change_Requests r : requestController.get_Requests().values()) {
 			System.out.printf("[%s] Requester: %s | Target: %s | New Role: %s | Status: %s (Approvals: %d, Rejections: %d)%n", 
 			r.get_id(), r.get_requester_id(), r.get_target_id(), r.get_new_role(), r.get_status(), r.get_approval_count(), r.get_rejection_count());
+		}
+	}
+
+	private void handleCreateRequest() {
+		try {
+			System.out.print("Requester ID: ");
+			String requester_id = sc.nextLine();
+			System.out.print("Target ID: ");
+			String target_id = sc.nextLine();
+			System.out.print("New Role (CREATOR / PRODUCER / EDITOR / FINANCE): ");
+			Role role = Role.valueOf(sc.nextLine().toUpperCase());
+			
+			Role_Change_Requests req = requestController.createRequest(requester_id, target_id, role);
+			System.out.println("Create Reuest: " + req.get_id());
+		} catch (Exception e) {
+			System.out.println("Failed to create request: " + e.getMessage());
 		}
 	}
 
